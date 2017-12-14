@@ -283,3 +283,367 @@ res.writeHead(200, 'OK', {
 - 这个方法每次响应前度必须被调用且只有一次, 必须在 **end** 方法之前.
 - 如果在调用 **writeHead** 方法之前调用了 **write** 或 **end** 方法，系统会自动帮你调用writeHead()方法，并且会生成默认的响应头.
 
+
+## 案例
+
+### 开启简易服务器
+
+```javascript
+'use strict';
+const http = require('http'); // 引入模块
+const port = 1337; // 端口号
+var html_ = '<meta charset="UTF-8">';
+    html_ += '<h1 style="color:#ff5d5d;">你好呀</h1>';
+
+// 创建服务器
+http.createServer(function(req, res) {
+  // 设置响应头
+  res.writeHead(200, {'content-type': 'text/html'});
+  // 设置响应体
+  res.write(html_);
+  // 结束响应
+  res.end();
+}).listen(port, function() { // 监听服务器
+  console.log(`服务器已开启, 请访问: http://127.0.0.1:${port}`);
+})
+```
+
+### 自定义模块
+
+> 在node环境中, **js文件** 后缀是可以省略, 每一个 **js文件** 都是一个单独的模块.
+
+server.js
+
+```javascript
+'use strict';
+const test = require('./test'); // 引用自定义模块, 需要写路径, 后缀 js 可以省略
+test.fun(); // 调用模块
+```
+
+test.js
+
+```javascript
+function fun() {
+  console.log('测试模块');
+}
+
+// module.exports.fun = fun; // 抛出模块
+exports.fun = fun; // module 可以 省略
+```
+
+### url模块
+
+```javascript
+'use strict';
+const url = require('url');
+var addr = 'https//127.0.0.1/test?name=atom&pwd=1334#top'; // 伪造的网址
+
+var uParse = url.parse(addr); // 解析 url 地址, 返回一个对象
+
+var data = { // 上面解析出来的对象
+  protocol: null,
+  slashes: null,
+  auth: null,
+  host: null,
+  port: null,
+  hostname: null,
+  hash: '#top',
+  search: '?name=atom&pwd=1334',
+  query: 'name=atom&pwd=1334',
+  pathname: 'https//127.0.0.1/test',
+  path: 'https//127.0.0.1/test?name=atom&pwd=1334',
+  href: 'https//127.0.0.1/test?name=atom&pwd=1334#top' }
+
+var uFormat = url.format(data); // 重组地址
+console.log(uFormat);
+// https//127.0.0.1/test?name=atom&pwd=1334#top
+
+var uResolve = url.resolve('http://', 'www.baidu.com'); // 拼接地址
+console.log(uResolve);
+// http:///www.baidu.com
+```
+
+### 路由
+
+> 根据url地址的后缀不同, 访问不同的页面.
+
+```javascript
+'use strict';
+const http = require('http');
+const url = require('url');
+const port = 1337;
+
+http.createServer(function(req, res) {
+  let path_ = url.parse(req.url).pathname; // 获取请求路径
+  // 根据路径做出分支
+  switch (path_) {
+  case '/': // 首页
+    res.writeHead(200, {'content-type': 'text/html;charset=utf-8'});
+    res.end('首页');
+    break;
+  case '/about': // about
+    res.writeHead(200, {'content-type': 'text/html;charset=utf-8'});
+    res.end('关于');
+    break;
+  case '/news': // news
+    res.writeHead(200, {'content-type': 'text/html;charset=utf-8'});
+    res.end('新闻');
+    break;
+  default: // 404
+    res.writeHead(200, {'content-type': 'text/html;charset=utf-8'});
+    res.end('404');
+    break;
+  } // switch end
+
+  res.end();
+}).listen(port, function() {
+  console.log(`服务器开启, 端口号: ${port}`);
+})
+```
+
+### fs模块
+
+#### 文件读取
+
+> 同步请求总在异步请求之前执行.
+
+test.js
+
+```javascript
+Hello World !!!
+```
+
+server.js
+
+```javascript
+'use strict';
+const fs = require('fs');
+
+/**
+ * 路径必须写后缀
+ * 异步请求
+ */
+fs.readFile('./test.js', function(err, data) {
+  if (err) throw err;
+  console.log(data.toString() + '异步');
+})
+
+/**
+ * 同步请求, 这个会先输出
+ */
+var str = fs.readFileSync('./test.js').toString();
+console.log(str + '同步');
+```
+
+#### 文件写入
+
+test.js
+
+```Javascript
+0 原始内容
+```
+
+server.js
+
+```javascript
+'use strict';
+const fs = require('fs');
+
+fs.appendFile('./test.js', '1 第一次写入, 异步 \n', function(err, data) {
+  if (err) throw err;
+  console.log('success');
+})
+
+fs.appendFileSync('./test.js', '2 第二次写入, 同步 \n');
+```
+
+#### 文件操作权限
+
+| 参数   | 描述                               |
+| ---- | -------------------------------- |
+| r    | 以读取模式打开文件                        |
+| r+   | 以读写模式打开文件                        |
+| rs   | 使用同步模式打开并读取文件. 指示操作系统忽略本地文件系统缓存. |
+| rs+  | 以同步的方式打开, 读取 并 写入文件.             |
+| w    | 以读取模式打开文件, 如果文件不存在则创建.           |
+| wx   | 同上, 文件不存在时, **返回失败** .           |
+| w+   | 以读写模式打开文件, 如果文件不存在则创建.           |
+| wx+  | 同上, 文件不存在时, **返回失败** .           |
+| a    | 以追加模式打开文件, 如果文件不存在时则创建.          |
+| ax   | 同上, 文件不存在时, **返回失败** .           |
+| a+   | 以读取追加模式打开文件, 如果文件不存在时则创建.        |
+| ax+  | 同上, 文件不存在时, **返回失败** .           |
+| mode | 用于创建文件时制定权限, 默认 **0666** .       |
+
+test.js
+
+```javascript
+Hello World !!!
+```
+
+server.js
+
+```javascript
+'use strict';
+const fs = require('fs');
+
+fs.open('./test.js', 'rs+', function(err, file) {
+  if (err) throw err;
+  let str = fs.readFileSync(file).toString();
+  console.log(str, '读取成功');
+  fs.appendFileSync(file, '写入成功');
+});
+```
+
+#### 文件名修改和删除
+
+> 需要自己准备测试文件, test.js
+
+#####修改
+
+```javascript
+'use strict';
+const fs = require('fs');
+
+/**
+ * 修改文件 异步
+ */
+fs.rename('test.js', 'testNew.js', function(err) {
+  if (err) throw err;
+  console.log('success');
+})
+
+/**
+ * 修改文件 同步
+ */
+// fs.renameSync('test.js', 'testNew.js');
+```
+
+#####删除
+
+```javascript
+'use strict';
+const fs = require('fs');
+
+/**
+ * 删除文件 异步
+ */
+fs.unlink('test.js', function(err) {
+  if (err) throw err;
+  console.log('success');
+})
+
+/**
+ * 删除文件 同步
+ */
+// fs.unlinkSync('test.js');
+```
+
+#### 文件检测和创建文件
+
+```javascript
+'use strict';
+const fs = require('fs');
+
+/**
+ * 检测并创建
+ */
+fs.exists('test.js', function(file) {
+  if (!file) {
+    fs.open('test.js', 'w', function(err) { // 打开目标文件, 如果没有就创建.
+      if (err) throw err;
+      console.log('success');
+    })
+  } else {
+    console.log('no');
+  }
+})
+```
+
+#### 读取网页模板
+
+自行准备 html文件.
+
+```javascript
+'use strict';
+const http = require('http');
+const fs = require('fs');
+
+let html = fs.readFileSync('./index.html');
+
+http.createServer(function(req, res) {
+  res.writeHead(200, {'content-type': 'text/html'});
+  res.write(html);
+  res.end();
+}).listen(3000, function() {
+  console.log('success');
+})
+```
+
+#### 读取文件目录
+
+自行准备目录, 以及下面的文件.
+
+##### 读取当前目录, 获取某个目录的详细信息
+
+> 返回值: 对象.
+
+```javascript
+'use strict';
+const fs = require('fs');
+
+/**
+ * 读取当前目录
+ */
+fs.stat('test', function(err, data) {
+  console.log(data);
+});
+// var Stats = { // 拿到的对象
+//   dev: 16777220,
+//   mode: 16877,
+//   nlink: 3,
+//   uid: 501,
+//   gid: 20,
+//   rdev: 0,
+//   blksize: 4194304,
+//   ino: 8592432208,
+//   size: 96,
+//   blocks: 0,
+//   atimeMs: 1513238860724.4377,
+//   mtimeMs: 1513238860603.2942,
+//   ctimeMs: 1513238860603.2942,
+//   birthtimeMs: 1513238854578.3784,
+//   atime: 2017-12-14T08:07:40.724Z,
+//   mtime: 2017-12-14T08:07:40.603Z,
+//   ctime: 2017-12-14T08:07:40.603Z,
+//   birthtime: 2017-12-14T08:07:34.578Z }
+
+/** 同步读取 */
+// fs.statSync('test');
+```
+
+##### 读取目标目录, 获取目标目录下的文件
+
+> 返回值: 数组.
+
+```javascript
+'use strict';
+const fs = require('fs');
+
+/**
+ * 读取目标目录, 返回目录中的文件 (数组)
+ */
+fs.readdir('test', function(err, data) {
+  if (err) throw err;
+  console.log(data); // [ 'test01.html' ]
+})
+
+
+/**
+ * 同步读取
+ */
+console.log(fs.readdirSync('test')); // [ 'test01.html' ]
+```
+
+### path模块
+
