@@ -274,12 +274,48 @@ n use 4.0.0  some.js      ＝＝》（以指定的版本来执行脚本）
 
 ###npm
 
+#### 安装和更新
+
 ```bash
-npm help 查看npm帮助
-npm find 查找组件
-npm install 安装组件
-npm remove 删除组件
+npm -v #查看版本
+npm i npm -g
+npm i npm@latest -g
+npm i npm@9.0.0 -g #指定版本, 用低版本好可以降级
 ```
+
+#### 包管理
+
+> 本质就是将包安装成命令行工具.
+
+```bash
+npm install <package_name> -g #全局安装
+```
+
+#### 常用命令
+
+```bash
+npm init -y #创建一个 npm 的配置文件: package.json
+```
+
+用于保存安装记录, 下次安装的时候, 根据记录直接安装依赖包.
+
+文件名不能使用中文, 也不能有空格.
+
+```bash
+npm i #安装包, 根据package.json来下载
+npm i <package_name> #安装包
+npm i <package_name> -S #安装包, 保存记录到package.json里面 
+npm um <package_name> #卸载包
+```
+
+#### 淘宝镜像
+
+```bash
+npm config set registry https://registry.npm.taobao.org
+npm config get registry #检测是否成功
+```
+
+
 
 ###Homebrew
 
