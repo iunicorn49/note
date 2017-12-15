@@ -1,27 +1,11 @@
 ## 未整理
 
-- 处理 **post** 请求的时候, 数据都在请求体里面, 形式为 **buffer** , 需要监听 **data** 和 **end** , 
+- 处理 **post** 请求的时候, 数据都在请求体里面, 形式为 **buffer** , 需要监听 **data** 和 **end** .
+- if (err && err.code !== 'ENOENT') throw err; — 如果出现不存在 data 以外的错误 才抛出错误.
 
-### 新模块
-
-| 名称         | 描述   |
-| ---------- | ---- |
-| underscore | 模板引擎 |
-
-
-
-
+### 
 
 ### 新方法
-
-```javascript
-req.on('data', function(chunk) {}); // 监听请求体的 data 获取碎片, 在函数里扔进数组里
-req.on('end', function() {}); // 监听请求体的 end
-var buffer = Buffer.concat(arr); // 将碎片组装起来, 字符串
-var obj = querystring.parse(buffer); // 字符串转对象, 需要引入模块.
-```
-
-
 
 
 
@@ -71,6 +55,21 @@ alert(str.startsWith("To be"));         // true
 alert(str.startsWith("not to be"));     // false
 alert(str.startsWith("not to be", 10)); // true
 ```
+
+## 小技巧
+
+1. 读取文件数据时, 若文件不存在, 可以用以下方式阻止系统抛出错误, 在后续写入数据时, 再处理一并创建文件.
+
+   `if (err && err.code !== 'ENOENT') throw err;`
+
+2. 处理 **post** 请求的时候, 数据都在请求体里面, 形式为 **buffer** , 需要监听, `req.on()` 的 **data** 和 **end** .
+
+## 常用第三方模块
+
+| 名称         | 描述     |
+| ---------- | ------ |
+| underscore | 模板引擎   |
+| mime       | 检测文件类型 |
 
 
 
@@ -248,6 +247,15 @@ request.rawHeaders // 请求头 (数组)
 request.httpVersion // http版本
 request.method // 请求方式
 request.url // 请求路径
+```
+
+#### 获取 post 数据
+
+```javascript
+req.on('data', function(chunk) {}); // 监听请求体的 data 获取碎片, 在函数里扔进数组里
+req.on('end', function() {}); // 监听请求体的 end
+var buffer = Buffer.concat(arr); // 将碎片组装起来, 字符串
+var obj = querystring.parse(buffer); // 字符串转对象, 需要引入模块.
 ```
 
 #### response
