@@ -1,3 +1,32 @@
+## 未整理
+
+- 处理 **post** 请求的时候, 数据都在请求体里面, 形式为 **buffer** , 需要监听 **data** 和 **end** , 
+
+### 新模块
+
+| 名称         | 描述   |
+| ---------- | ---- |
+| underscore | 模板引擎 |
+
+
+
+
+
+### 新方法
+
+```javascript
+req.on('data', function(chunk) {}); // 监听请求体的 data 获取碎片, 在函数里扔进数组里
+req.on('end', function() {}); // 监听请求体的 end
+var buffer = Buffer.concat(arr); // 将碎片组装起来, 字符串
+var obj = querystring.parse(buffer); // 字符串转对象, 需要引入模块.
+```
+
+
+
+
+
+----------------
+
 ##ES6
 
 ### 关键字
@@ -15,6 +44,35 @@ var name = 'atom';
 var str = `${name} is the best`;
 console.log(str); // atom is the best
 ```
+
+### 新增方法
+
+#### string
+
+#####startsWith
+
+检测目标子字符串是否是目标字符串的开头或其他地方, 返回 布尔值.
+
+```javascript
+str.startsWith(searchString [, position]);
+```
+
+| 参数           | 描述                                       |
+| ------------ | ---------------------------------------- |
+| searchString | 要搜索的子字符串                                 |
+| position     | 在 `str` 中搜索 `searchString` 的开始位置，默认值为 0，也就是真正的字符串开头处. |
+
+示例
+
+```javascript
+var str = "To be, or not to be, that is the question.";
+
+alert(str.startsWith("To be"));         // true
+alert(str.startsWith("not to be"));     // false
+alert(str.startsWith("not to be", 10)); // true
+```
+
+
 
 ## 内置方法
 
@@ -646,4 +704,3 @@ console.log(fs.readdirSync('test')); // [ 'test01.html' ]
 ```
 
 ### path模块
-
