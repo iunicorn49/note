@@ -1,9 +1,6 @@
 ## 未整理
 
-- 处理 **post** 请求的时候, 数据都在请求体里面, 形式为 **buffer** , 需要监听 **data** 和 **end** .
-- if (err && err.code !== 'ENOENT') throw err; — 如果出现不存在 data 以外的错误 才抛出错误.
 
-### 
 
 ### 新方法
 
@@ -58,11 +55,9 @@ alert(str.startsWith("not to be", 10)); // true
 
 ## 小技巧
 
-1. 读取文件数据时, 若文件不存在, 可以用以下方式阻止系统抛出错误, 在后续写入数据时, 再处理一并创建文件.
-
-   `if (err && err.code !== 'ENOENT') throw err;`
-
+1. 读取文件数据时, 若文件不存在, 可以用以下方式阻止系统抛出错误, 在后续写入数据时, 再处理一并创建文件. `if (err && err.code !== 'ENOENT') throw err;`
 2. 处理 **post** 请求的时候, 数据都在请求体里面, 形式为 **buffer** , 需要监听, `req.on()` 的 **data** 和 **end** .
+3. 跳转页面 -  `res.writeHead(301, 'Moved Permanently', {'location' : '/'});`
 
 ## 常用第三方模块
 
