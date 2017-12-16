@@ -4,7 +4,9 @@
 
 ### 新方法
 
+Buffer.from() 字符串转换buffer
 
+Buffer.concat() 拼接数组里的碎片buffer
 
 ----------------
 
