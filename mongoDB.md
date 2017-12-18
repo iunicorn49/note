@@ -85,3 +85,88 @@ mc.connect(url, function(err, client) { // 开始连接
 }) // mc.connect end
 ```
 
+### 插入单条数据
+
+```javascript
+  /** 获取数据库.获取集合.插入单条数据*/
+  // client.db('test').collection('demo').insertOne({name:'atom',age:20}, function(err) {
+  //   if (err) throw err;
+  //   client.close(); // 一定要先关闭数据库
+  //   console.log('insertOne end');
+  // });
+```
+
+### 插入多条数据
+
+```javascript
+  /** 插入多条数据 */
+  // let insertArr = [{name: 'lick',age: 180},{name: 'godan',age: 200}];
+  // client.db('test').collection('demo').insertMany(insertArr, function(err) {
+  //   if (err) throw err;
+  //   client.close();
+  //   console.log('insertMany end');
+  // })
+```
+
+### 查询所有数据
+
+```javascript
+  /** 查询所有数据, find里可以传入条件 */
+  // client.db('test').collection('demo').find().toArray(function(err, data) {
+  //   if (err) throw err;
+  //   client.close();
+  //   console.log(data);
+  // })
+```
+
+### 查询一条数据
+
+```javascript
+  /** 查询单条数据, 如果有多条数据符合条件, 则返回最上面的一条 */
+ client.db('test').collection('demo').findOne({name:'lick'},function(err, data) {
+    if (err) throw err;
+    client.close();
+    console.log(data);
+  })
+```
+
+### 替换
+
+```javascript
+// 第一个参数条件, 第二参数替换的数据
+client.db('test').collection('demo').update({age: 25},{age:180}, function(err) {
+  client.close();
+  console.log('success');
+})
+```
+
+### 更新一条数据
+
+```javascript
+client.db('test').collection('demo').update({age: 180},{$set:{name:'bigboss'}}, function(err) {
+  client.close();
+  console.log('success');
+})
+```
+
+### 更新多条数据
+
+```javascript
+// 记得是 updateMany
+client.db('test').collection('demo').updateMany({age: 180},{$set:{name:'snake'}}, function(err) {
+  client.close();
+  console.log('success');
+})
+```
+
+### 删除一条数据
+
+```javascript
+// 删除数据
+client.db('test').collection('demo').deleteOne({name:'snake'},function(err) {
+  if (err) throw err;
+  client.close();
+  console.log('delete');
+})
+```
+

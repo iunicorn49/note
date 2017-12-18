@@ -31,7 +31,3 @@ res.redirect(301, url);
 res.status(404).send('访问的页面不存在');
 ```
 
-## 案例
-
-### 注册路由
-
