@@ -1,0 +1,25 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-size: 0;
+}
+
+div {
+  height: 300px;
+  width: 200px;
+  display: inline-block;
+}
+
+div:first-child {
+  background: #585858;
+}
+
+div:last-child {
+  background: #abcdef;
+}
+
+.target {
+  background: #ff5d5d;
+  position: relative;
+  left: 50px;
+}
