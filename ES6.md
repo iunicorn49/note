@@ -2,8 +2,8 @@
 
 | 关键字   | 描述   | 备注                                       |
 | ----- | ---- | ---------------------------------------- |
-| let   | 声明变量 | 一个作用域中不允许出现同名变量, `{}` 可以生成作用域.           |
-| const | 声明常量 | 同一个作用域中只允许声明一次, 并且不允许被改变, 声明对象和数组的时候, 可以被拓展, 值也允许被改变. |
+| let   | 声明变量 | 一个作用域中不允许出现同名变量, `{}` 可以生成作用域. 不会进行变量提升. |
+| const | 声明常量 | 定义的时候必须赋值,同一个作用域中只允许声明一次, 并且不允许被改变, 声明对象和数组的时候, 可以被拓展, 值也允许被改变, 不会提升, 常量一般用大写字母表示. |
 
 ### 方法
 
@@ -50,7 +50,7 @@ console.log(Array.from({length:3}, item => 0)); // [0,0,0]
 
 ## 新增
 
-###  结构赋值
+###  解构赋值
 
 > 按照一定结构进行 **单个/多个** 变量的赋值.
 >
@@ -83,6 +83,18 @@ console.log("z:", z); // 1
 function fun([fna, fnb, fnc]) {
   return [fna, fnb, fnc];
 }
+
+/** 只接受对象的部分属性 */
+function user({name, age}) {
+  console.log(name,age);
+}
+let userObj = {
+  name: 'atom',
+  age: 24,
+  hobby: 'sleep',
+  say: 'hello'
+}
+user(userObj);
 ```
 
 ### 箭头函数
@@ -106,7 +118,37 @@ let fun3 = (a, b) => a + b;
 /** 返回一个对象, 由于 {} 代表一个单独的作用域, 需要将其用 () 包裹变成表达式, 否则会编译失败 */
 let objFun = (a, b) => ({name:a ,age:b});
 console.log(objFun('atom', 25));
+
+/** 部分使用场景 */
+setTimeout(() => {
+  console.log('hehe');
+}, 1000);
+
+/** 只有一个参数的时候, 小括号 可以省略
+ * 函数只有一行的情况下, 大括号 和 return也可以省略
+ */
+
+let arr = [1,2,3,4,5];
+
+// arr = arr.map(function(item) {
+//   return item + 10;
+// })
+
+arr = arr.map(item => item + 10);
+console.log('arr:', arr);
+
 ```
+
+### 函数默认参数
+
+```javascript
+function add(x = 1,y = 2) {
+  console.log(x + y);
+}
+add(10); // 12
+```
+
+
 
 ### Rest & Spread
 
@@ -130,7 +172,53 @@ let arr = [1,2,3,4,5];
 console.log(...arr); // 1,2,3,4,5 
 ```
 
+### 模板字符串
 
+```javascript
+'use strict';
+let name = 'atom';
+console.log(`my name is ${name}`);
+```
+
+### 对象
+
+> 当 **key** === **value** 的情况下, 可以只写一个.
+
+```javascript
+let name = 'atom';
+let age = 25;
+
+let obj = {
+  name,
+  age
+}
+
+console.log(obj); // { name: 'atom', age: 25 }
+```
+
+### 类
+
+```javascript
+class Father {
+  // 构造函数
+  constructor() {
+    this.money = 100000;
+  } // constructor end
+}
+
+class Son extends Father {
+  constructor() {
+    // 上面用 extends 继承了 Father的属性, 这里就需要用 super 属性
+    super();
+    this.love = 'atom';
+  }
+}
+
+let f = new Father();
+let s = new Son();
+console.log('f:',f);
+console.log('s:',s);
+```
 
 ## 工具
 

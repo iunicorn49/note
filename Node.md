@@ -1,62 +1,3 @@
-##webpack
-
-
-
-
-
-### 新方法
-
-Buffer.from() 字符串转换buffer
-
-Buffer.concat() 拼接数组里的碎片buffer
-
-----------------
-
-##ES6
-
-### 关键字
-
-| 关键字   | 描述               | 备注                 |
-| ----- | ---------------- | ------------------ |
-| let   | 同 **var** , 声明变量 | 遇到 `{}` 就会生成单独的作用域 |
-| const | 声明常量             |                    |
-|       |                  |                    |
-
-### 动态字符串
-
-```javascript
-var name = 'atom';
-var str = `${name} is the best`;
-console.log(str); // atom is the best
-```
-
-### 新增方法
-
-#### string
-
-#####startsWith
-
-检测目标子字符串是否是目标字符串的开头或其他地方, 返回 布尔值.
-
-```javascript
-str.startsWith(searchString [, position]);
-```
-
-| 参数           | 描述                                       |
-| ------------ | ---------------------------------------- |
-| searchString | 要搜索的子字符串                                 |
-| position     | 在 `str` 中搜索 `searchString` 的开始位置，默认值为 0，也就是真正的字符串开头处. |
-
-示例
-
-```javascript
-var str = "To be, or not to be, that is the question.";
-
-alert(str.startsWith("To be"));         // true
-alert(str.startsWith("not to be"));     // false
-alert(str.startsWith("not to be", 10)); // true
-```
-
 ## 小技巧
 
 1. 读取文件数据时, 若文件不存在, 可以用以下方式阻止系统抛出错误, 在后续写入数据时, 再处理一并创建文件. `if (err && err.code !== 'ENOENT') throw err;`
@@ -71,8 +12,6 @@ alert(str.startsWith("not to be", 10)); // true
 | mime       | 检测文件类型           |
 | express    | 框架               |
 | ejs        | 配合 express 的模板引擎 |
-
-
 
 ## 内置方法
 

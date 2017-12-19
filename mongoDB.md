@@ -43,7 +43,7 @@ db.集合名称.find() # 查看集合所有数据
 db.集合名称.find().pretty() # 查看集合所有的数据(格式化后)
 db.集合名称.remove({删除条件}) # 删除数据
 db.集合名称.drop() # 删除集合
-db.dropDatabase
+db.dropDatabase() # 删库, 需要先进库
 ```
 
 #####db.集合名称.find(条件)
