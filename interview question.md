@@ -195,6 +195,8 @@ word-wrap: normal; 浏览器默认换行规则
 ### 23. DOCTYPE 的作用
 
 > DOCTYPE标签是一种标准通用标记语言的文档类型声明, 它的目的是要告诉标准通用标记语言解析器, 它应该使用什么样的文档类型定义（DTD）来解析文档.
+>
+> HTML5 不基于 SGML , 因此不需要 DTD 进行引用, 但需要 DOCTYPE 来规范浏览器的行为, 而那些基于 SGML 的需要进行 DTD 进行引用, 才能告知浏览器文档所使用的文档类型.
 
 ### 24. 盒模型
 
@@ -264,7 +266,11 @@ document.querySelectorAll
 document.getElementByClassName
 ```
 
+### 34. 除了 音频 和 视频 HTML5 还增加了那些多媒体元素 - (待议)
 
+- **<embed>** : 作为外部应用的容器.
+- **<track>** : 定义多媒体的文本跟踪.
+- **<source>** : 多种媒体源的支持.
 
 ##  JavaScript
 
@@ -350,6 +356,65 @@ for (var i = 0; i < 10; i++) {
 - 多加利用缓存
 
 ### 3. 如何做好SEO - 略
+
+### 4. HTML5 中的本体储存
+
+####方式
+
+1. cookie
+
+   大小: 4k .
+
+   获取方式: 每次请求都会携带.
+
+   生命周期: 默认是会话 cookie , 浏览器关闭就失效了, 设置过期时间.
+
+   特性: 有路径问题, 子目录可以访问父目录的 cookie , 但是父目录无法访问子目录的 cookie , 通常设置路径为根路径.
+
+2. sessionStorage
+
+   大小: 5m 左右.
+
+   获取方式: 必须手动获取, 不会自动携带, `getItem` 来获取.
+
+   生命周期: 关闭浏览器失效, 多窗口不共享.
+
+3. localStorage
+
+   大小: 5m 左右.
+
+   获取方式: 必须手动获取, 不会自动携带, `getItem` 来获取.
+
+   生命周期: 只要不手动清除, 则永久存在, 并且多窗口共享.
+
+####操作
+
+#####设置
+
+```javascript
+localStorage.setItem('username', 'atom');
+```
+
+#####获取
+
+```javascript
+localStorage.getItem('username');
+```
+
+#####删除
+
+```javascript
+localStorage.removeItem('username');
+```
+
+#####设置对象
+
+```javascript
+localStorage.setItem('obj', JSON.stringify(obj));
+localStorage.getItem('obj');
+```
+
+### 5. 微格式 - 略
 
 
 
