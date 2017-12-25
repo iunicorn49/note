@@ -1,3 +1,5 @@
+# ES6
+
 ## 关键字
 
 | 关键字   | 描述   | 备注                                       |
@@ -6,6 +8,12 @@
 | const | 声明常量 | 定义的时候必须赋值,同一个作用域中只允许声明一次, 并且不允许被改变, 声明对象和数组的时候, 可以被拓展, 值也允许被改变, 不会提升, 常量一般用大写字母表示. |
 
 ### 方法
+
+#### String
+
+##### String.indexOf()
+
+> 注意, 如果传入参数为空字符串, 返回的是 0 .
 
 #### Array
 
@@ -126,6 +134,8 @@ setTimeout(() => {
 
 /** 只有一个参数的时候, 小括号 可以省略
  * 函数只有一行的情况下, 大括号 和 return也可以省略
+ * 箭头函数不能使用 arguments
+ * 箭头函数不能用作于构造函数
  */
 
 let arr = [1,2,3,4,5];
@@ -137,6 +147,47 @@ let arr = [1,2,3,4,5];
 arr = arr.map(item => item + 10);
 console.log('arr:', arr);
 
+/**
+ * 箭头函数 => 读作: goes to
+ * 箭头后面是函数体
+ * 不要在 Vue 中的 methods 中定义方法的时候使用 箭头函数
+ */
+;(function () {
+  // let fn = item => item;
+  // // 上面的语法等同于下面的
+  // let fn = function (item) {
+  //   return item;
+  // }
+  // // 如果没有参数或者有多个参数
+  // let fn = () => item;
+  // let fn = (item, index) => item;
+  // // 如果是函数体
+  // let fn = () => {console.log('我是函数体');};
+  // // 等同于下面
+  // let fn = function () {
+  //   console.log('我是函数体');
+  // }
+  // // 如果函数体中只有一行代码, {} 可以省略
+  // let fn => console.log('我是函数体');
+  // // 如果省略了 {} , 会自动将返回值返回, return 可以省略
+  // let fn => 1;
+  // console.log(fn()); // 1;
+})();
+
+/** 箭头函数的 this 指向, 箭头函数的 this 由它所处的环境决定, 在全局环境中, this => window, 在一个函数内部创建, this 指向 外部函数的 this */
+;(function () {
+  let obj = {
+    fn:function () {
+      console.log('fn:', this.name);
+      let fnInSide = () => console.log('fnInSide:', this.name);
+      fnInSide();
+    },
+    name: 'obj',
+  }
+  obj.fn();
+  let outSide = () => console.log('outSide:', this);
+  outSide(); // 在严格模式下是 unidentified, 在非严格模式下, 指向window
+})();
 ```
 
 ### 函数默认参数
@@ -225,4 +276,31 @@ console.log('s:',s);
 ES6 在线编译工具: http://babeljs.io/
 
 
+
+# JavaScript
+
+## 内置方法
+
+### Array
+
+#### Array.prototype.findIndex()
+
+```javascript
+function isBigEnough(element) {
+  return element >= 15;
+}
+
+[12, 5, 8, 130, 44].findIndex(isBigEnough); 
+// index of 4th element in the Array is returned,
+// so this will result in '3'
+```
+
+> arr.findIndex(callback[, thisArg])
+
+| 参数          | 描述                           |
+| ----------- | ---------------------------- |
+| callback    | 回调函数                         |
+| [, thisArg] | 当前元素                         |
+| arr         | 调用的数组                        |
+| thisArg     | 可选。执行`callback`时作为`this`对象的值 |
 
