@@ -118,6 +118,29 @@ npm i -D style-loader css-loader
   },
 ```
 
+### babel - es6 降级
+
+```bash
+npm i -D babel-core babel-loader babelreset-env
+```
+
+> webpack.config.js
+
+```javascript
+// 编译 ES6 文件, 需要排除 node模块下的文件, 从而提高效率
+{test: /\.js$/, use: 'babel-loader', exclude: /node_modules/}
+```
+
+项目根目录下创建 `.babelrc` 文件
+
+```json
+{
+  "presets": [
+    "env"
+  ]
+}
+```
+
 ## 示例
 
 ###基础配置示例
@@ -185,4 +208,6 @@ module.exports = {
   }
 }
 ```
+
+## Vue - 单文件组件
 
