@@ -52,6 +52,7 @@ html,body {
   padding-top: 45px;
   padding-bottom: 55px;
   position: relative;
+  box-sizing: border-box;
 }
 .lt_header {
   height: 45px;
