@@ -208,6 +208,3 @@ module.exports = {
   }
 }
 ```
-
-## Vue - 单文件组件
-

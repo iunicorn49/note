@@ -776,6 +776,4 @@ console.log(a.say === b.say); // true
  */
 ```
 
-
-
 ## 闭包
