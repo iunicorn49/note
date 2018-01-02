@@ -6,6 +6,10 @@
 
 ### JQ-filter
 
+### constructor
+
+
+
 
 
 ## 基本概念
@@ -301,6 +305,205 @@ console.log(arr1 == arr3); // true
 
 
 ## 函数
+
+### 创建函数的三种方法
+
+#### 函数声明
+
+> 函数式声明可以先调用, 再声明, 会产生变量提升.
+
+```javascript
+fn(); 
+function fn() {
+  //code
+}
+```
+
+#### 函数表达式
+
+> 函数表达式, 必须先声明在调用.
+
+```javascript
+var fn = function() {
+  //code
+}
+fn();
+```
+
+#### 构造函数
+
+```javascript
+// 相当于 var fn = function() {}
+var fn = new Function('a', 'b', 'console.log(a+b)');
+/**
+ * 所有参数都是字符串
+ * 最后一个参数是代码本体, 前几个参数都是形参
+ */
+fn(1,2); // 3
+```
+
+### 调用函数的四种模式
+
+> 根据函数内部this的指向不同, 可以将函数分为4中调用模式
+
+- 函数调用模式 - this指向window
+- 方法调用模式 - this指向调用者
+- 构造函数调用模式 - this指向实例
+- 上下文调用模式(借用方法调用模式) - this指向借用者
+
+#### 函数调用模式
+
+> this 指向 window
+
+```javascript
+function fn() {
+  console.log(this);
+}
+fn(); // window
+```
+
+#### 方法调用模式
+
+> 当一个函数被保存在一个对象内, 我们称之为这个对象的方法. 当这个方法被调用时, this 指向这个对象.
+
+```javascript
+let obj = {
+  name: 'atom',
+  fn: function () {
+    console.log(this);
+  }
+}
+obj.fn(); // obj
+```
+
+#### 构造函数调用模式
+
+> 通过new来调用构造函数的时候, 会执行其中的代码, this 指向创建出来的实例.
+
+```javascript
+function User(name) {
+  this.name = name;
+  console.log(this.name);
+}
+let user = new User('atom'); // atom
+```
+
+#### 上下文调用 - call & apply
+
+> 参数一: 改变 this 的指向, 如果不传, 指向 window.
+>
+> apply 和 call 的方法类似, apply 的后续参数是一个包含多个参数的数组,而, call 则是, 将多个参数直接放进去.
+
+- 如果参数很少, 则使用 call
+- 参数多的情况下, 使用 apply
+
+#####关于伪数组
+
+> 伪数组也叫类数组
+
+- 伪数组是一个对象, 但是有 **length** 属性.
+- 伪数组没有数组的方法, 如 `push/pop` .
+- 伪数组可以遍历.
+- 常见的伪数组 `arguments` `document.getElementByTagName` `jQuery对象` .
+
+```javascript
+let fakeArr = {
+  0: '零',
+  1: '一',
+  2: '二',
+  length: 3
+};
+// fakeArr.push('三') // 报错, 伪数组不具备数组的方法
+[].push.call(fakeArr, '三');
+[].push.apply(fakeArr, ['四']);
+console.log(fakeArr); // {0: "零", 1: "一", 2: "二", 3: "三", 4: "四", length: 5}
+```
+
+#####bind
+
+> 创建一个新的函数, 绑定 this 的指向, 无论怎么调用, this 都不会改变
+
+```javascript
+var master = 'window';
+let obj = {
+  master: 'obj',
+  say() {
+    console.log(this.master);
+    function inside() {
+      console.log(this.master);
+    }
+    inside();
+  }
+}
+let newBee = {
+  master: 'newBee'
+}
+obj.say(); // 第一次调用 say: obj, 第二次调用 inside: window
+
+console.log('下面是bind');
+let fn = obj.say.bind(newBee);
+fn(); // 第一次调用 say: newBee, 第二次调用 inside: window
+```
+
+```javascript
+var master = 'window';
+let obj = {master: 'obj'};
+function say() {
+  console.log(this.master);
+}
+obj.say = say;
+obj.say(); // obj
+obj.say = say.bind(window);
+obj.say(); // window
+```
+
+#### 调用模式的面试题
+
+```javascript
+let obj = {
+  sayHi: function () {
+    console.log(this);
+  }
+}
+let fn = obj.sayHi;
+fn(); // window
+obj.sayHi(); // obj
+/**
+ * 虽然 sayHi 是obj的方法, 但是通过函数名调用, 所以指向window
+ */
+```
+
+```javascript
+let fn = function () {
+  console.log(this);
+}
+let obj = {
+  sayHi: fn
+}
+obj.sayHi(); // obj
+fn(); // window
+```
+
+```javascript
+var age = 38; // 如果用 let , this 会禁止指向 window, 导致函数foo获取不到 age
+let obj = {
+  age: 18,
+  getAge: function () {
+    console.log(this.age); // 18
+    function foo() {
+      console.log(this.age); // 38
+    }
+    foo();
+  },
+}
+obj.getAge();
+```
+
+### 函数也是对象
+
+> 函数是由 new Function 创建出来的实例, 因此函数也是一个对象, 所有的函数都是 new Function 的实例.
+
+
 
 ## this
 
@@ -776,4 +979,81 @@ console.log(a.say === b.say); // true
  */
 ```
 
-## 闭包
+## 继承
+
+> 自己没有的属性和方法, 从别人那里拿来用, 就是继承. 
+
+###继承的方法
+
+#### 混入式继承
+
+```javascript
+function extend (obj1, obj2){
+  for(var k in obj2){
+    obj1[k] = obj2[k];
+  }
+}
+```
+
+####原型链继承
+
+> 让子类继承父类的属性和方法, 定义一个构造函数, 然后, 将父类的新实例赋值给构造函数的原型.
+>
+> 缺点: 字面量重写原型会终端关系, 使用引用类型的原型, 并且子类型无法给超类型传递参数.
+
+```Javascript
+function Parent() {
+  this.money = 10000;
+}
+function Child() {
+  this.age = 12;
+}
+// Child 通过原型继承 Parent
+Child.prototype = new Parent;
+let son = new Child;
+console.log('son:', son.money); // 10000
+
+function Brother() {
+  this.name = 'brother';
+}
+Brother.prototype = new Child;
+let brother = new Brother;
+console.log('brother:', brother.money); // 10000
+console.log('brother:', brother.age); // 12
+
+console.log(brother instanceof Object); // true
+console.log(brother instanceof Parent); // true
+console.log(brother instanceof Child); // true
+```
+
+#### 经典继承
+
+> 通过 Object.create(), 指定原型对象及其属性, 去创建一个新的对象.
+
+```javascript
+function Parent() {
+  this.name = 'atom';
+}
+Parent.prototype.money = 10000;
+let father = new Parent;
+
+let son = Object.create(Parent);
+console.log(son.name); // atom
+console.log(son.prototype.money); // 10000
+console.log(son.__proto__); // Parent 构造函
+```
+
+###拓展内置对象
+
+```javascript
+function MyArr() {} // 自定义构造函数
+MyArr.prototype = []; // 将数组放在自己的原型上
+MyArr.prototype.say = function () { // 给原型添加方法
+  console.log('hello');
+}
+let arr = new MyArr;
+arr.push(1,2,3);
+console.log(arr); // [1,2,3]
+arr.say(); // hello
+```
+
