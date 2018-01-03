@@ -189,6 +189,64 @@ console.log(arr1 == arr3); // true
 
 ## 对象
 
+### 内置对象
+
+> 通过 `typeof` 操作符, 来获取对象的类型, 返回一个字符串.
+
+```javascript
+console.log(typeof undefined); // undefined
+console.log(typeof Math); // object
+console.log(typeof Math.abs); // function
+console.log(typeof null); // object
+```
+
+### 包装对象
+
+- number
+- boolean
+- string
+
+> 用 `new` 来创建, 他们的类型都会变成 object, 没事不要去用包装对象.
+
+```javascript
+console.log(typeof 123); // number
+var n = new Number(123);
+console.log(typeof n); // object
+console.log(123 == n); // true
+console.log(123 === n); // false
+```
+
+> 如果不用 `new` 调用, 则会当做普通函数, 把任何类型的数据强制转换为对象的类型.
+
+```javascript
+let str = '1a';
+console.log(typeof str); // string
+let n = Number(str);
+console.log(typeof n);
+let m = new Number(str); // number
+console.log(typeof m); // object
+console.log(str); // 1a
+console.log(n); // NaN
+console.log(m); // {}
+```
+
+不建议使用包装对象(new)来转换数据类型.
+
+- 用 `parseInt()` 或 `parseFloat()` 来转换成 `number`
+- 用 `string()` 或 `.toString()` 来转换成 `string`
+- 判断 `Array` 使用 `Array.isArray(arr)`
+- 判断 `null` 使用 `a === null`
+
+`null` 和 `undefined` 没有 `.toString` 方法, `number` 对象直接调用 `.toString` 会报错.
+
+```javascript
+123..toString(); // 正常
+(123).toString(); // 正常
+123.toString(); // 报错
+```
+
+
+
 ### 创建对象的方式
 
 1. 通过 `new Object()` 创建.
@@ -243,6 +301,11 @@ console.log(arr1 == arr3); // true
 
 ### 面向对象编程
 
+#### 基本概念
+
+- 类: 对象的类型模板, 代表一个类型, 但是不表示任何具体的东西.
+- 实例: 根据类创建的对象, 所诞生的实例都是独立的个体, 它们都属于同一个类.
+
 面向对象编程 — Object Oriented Programming, 简称 **OOP** , 是一种编程的开发思想.
 
 在面向对象程序开发思想中, 每一个对象都是功能中心, 具有明确的分工, 可以完成接受信息, 处理数据, 发出信息等任务.
@@ -254,11 +317,15 @@ console.log(arr1 == arr3); // true
 
 面向对象不是面向过程的替代, 而是面向过程的封装.
 
-**面对对象的特性**
+####面对对象的特性
 
 - 封装性: 将功能具体实现, 全部封装到对象的内部, 外界使用对象时, 只需要关注对象提供的方法如何使用, 而不需要关心对象内部的具体实现.
 - 继承性: 一个对象没有的属性和方法, 直接从其他对象哪里拿过来用, 就实现了继承.
 - 多态性: 在 **JS** 中没有这个特性.
+
+#### 例子
+
+
 
 ### 深度拷贝与浅拷贝
 
@@ -948,31 +1015,6 @@ let obj = {
 obj.deeper.say(); // atom: Hello
 ```
 
-## 原型链
-
-### 基本概念
-
-**JS** 规定, 每一个构造函数都有一个 `prototype` 属性, 指向另外一个对象, 这个对象所有的属性和方法, 都会被这个构造函数继承.
-
-这也就意味着, 我们可以把所有对象实例需要共享的属性和方法直接定义在 `prototype` 对象上.
-
-```javascript
-function Person(name, age) {
-  this.name = name;
-  this.age = age;
-}
-Person.prototype.type = 'human';
-Person.prototype.say = function() {
-  console.log(this.name);
-}
-let a = new Person('atom', 25);
-let b = new Person('AXX', 18);
-console.log(a.say === b.say); // true
-/**
- * 这时, 所有实例的 type 和 say() 方法 都指向 prototype对象, 用的是同一个地址, 因此提高 运行效率.
- */
-```
-
 ## 继承
 
 > 自己没有的属性和方法, 从别人那里拿来用, 就是继承. 
@@ -1051,3 +1093,57 @@ console.log(arr); // [1,2,3]
 arr.say(); // hello
 ```
 
+## 原型链
+
+### 概念
+
+当用 `obj.xxx` 访问一个对象的属性时候, **JS引擎** 会在当前对象上查找, 如果找不到, 就一直往上朝着原型对象上找, 最终, 追溯到 `Object.prototype` , 如果没有找到, 就返回 `undefined` .
+
+```javascript
+var arr = [1,2,3];
+// arr => Array.prototype => Object.prototype => null
+console.log(arr.__proto__); // 可以看到所有 Array 的方法
+console.log(arr.__proto__.__proto__); // 可以看到所有 Object 的方法
+console.log(arr.__proto__.__proto__.__proto__); // null
+```
+
+ 函数也是一个对象, 它也有原型链
+
+```javascript
+function foo() {
+  return 'foo';
+}
+console.dir(foo.__proto__); // 可以看到所有函数的方法
+console.dir(foo.__proto__.__proto__); // 可以看到所有对象的方法
+console.dir(foo.__proto__.__proto__.__proto__); // null
+```
+
+### 方法
+
+#### prototype
+
+#### proto
+
+####constructor
+
+
+
+###构造函数创建对象
+
+> 通过 `new` 来调用函数, 称之为构造函数, 返回一个对象,.
+
+```javascript
+function Person(name) {
+  this.name = name || 'nameless';
+  this.say = function () {
+    console.log(`${this.name}: Hello!`);
+  }
+}
+let a = new Person;
+// a => Person.prototype => Object.prototype => null
+console.log(a.__proto__); // Person 构造函数
+console.log(a.__proto__.__proto__); // Object
+console.log(a.__proto__.__proto__.__proto__); // null
+```
+
+这个构造函数诞生的所有实例的原型链都是一样的.
