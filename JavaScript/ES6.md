@@ -2,10 +2,12 @@
 
 ## 关键字
 
-| 关键字   | 描述   | 备注                                       |
-| ----- | ---- | ---------------------------------------- |
-| let   | 声明变量 | 一个作用域中不允许出现同名变量, `{}` 可以生成作用域. 不会进行变量提升. |
-| const | 声明常量 | 定义的时候必须赋值,同一个作用域中只允许声明一次, 并且不允许被改变, 声明对象和数组的时候, 可以被拓展, 值也允许被改变, 不会提升, 常量一般用大写字母表示. |
+| 关键字     | 描述   | 备注                                       |
+| ------- | ---- | ---------------------------------------- |
+| let     | 声明变量 | 一个作用域中不允许出现同名变量, `{}` 可以生成作用域. 不会进行变量提升. |
+| const   | 声明常量 | 定义的时候必须赋值,同一个作用域中只允许声明一次, 并且不允许被改变, 声明对象和数组的时候, 可以被拓展, 值也允许被改变, 不会提升, 常量一般用大写字母表示. |
+| export  | 导出   | 从模块中, 导出函数,对象,原始值,其他程序可以通过 `import` 调用.  |
+| Promise | 处理异步 | 一个构造函数, 处理异步请求, 返回成功或失败.                 |
 
 ## 新增
 
@@ -67,7 +69,7 @@ let fun = function(a) {
   return a;
 }
 
-let fun2 = (a) => 1;
+let fun2 = (a) => a;
 
 console.log('fun',fun(1));
 console.log('fun2',fun2(1));
@@ -150,8 +152,6 @@ function add(x = 1,y = 2) {
 add(10); // 12
 ```
 
-
-
 ### Rest & Spread
 
 > 两种方法用法类似.
@@ -189,12 +189,10 @@ console.log(`my name is ${name}`);
 ```javascript
 let name = 'atom';
 let age = 25;
-
 let obj = {
   name,
   age
 }
-
 console.log(obj); // { name: 'atom', age: 25 }
 ```
 
@@ -226,4 +224,67 @@ console.log('s:',s);
 
 ES6 在线编译工具: http://babeljs.io/
 
+## 方法
+
+### 关键字
+
+#### export
+
+**MDN文档:** https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/export
+
+**export default**
+
+> 默认导出: 这种方式导出的时候, 不需要设定名字, 而且只能导出一样东西, 可以是字符串, 数值, 函数,类等.
+>
+> 在接受的时候, 可以自己定义名称.
+
+```javascript
+// 在test.js中导出
+export default 12;
+
+// 在另外一个 js文件中 接受
+import a from './test.js'
+console.log(a) // 12
+```
+
+**export {}**
+
+> 命名导出: 这种导出方式可以一次性导出多个, 接收方也可以选择部分接受, 需要变量名, 接收方的变量名不能随意更改.
+
+```javascript
+// 在test.js中导出
+let a = 'a'
+let b = () => {console.log('b')}
+let c = {
+  name: 'c',
+  say: function () {
+    console.log(this.name);
+  }
+}
+export {a,b,c}
+
+// 在另外一个 js文件中 接受
+import {a,b,c} from './config.js'
+console.log(a) // a
+b() // b
+c.say() // c
+```
+
+### 构造函数
+
+#### promise
+
+
+
+### 转码
+
+#### encodeURIComponent()
+
+**MDN文档:** https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+
+> 对统一资源标识符 (URI) 的组成部分进行编码, 它使用一到四个转义序列来表示字符串中的每个字符的 **UTF-8** 编码(只有由两个Unicode代理区字符组成的字符才用四个转义字符编码).
+
+```javascript
+encodeURIComponent(str);
+```
 
