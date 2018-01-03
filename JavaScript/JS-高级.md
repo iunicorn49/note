@@ -1120,9 +1120,18 @@ console.dir(foo.__proto__.__proto__.__proto__); // null
 
 ### 方法
 
-#### prototype
+####Object.prototype.\__proto__
 
-#### proto
+> 一个访问器, 可以访问对象内部的 **prototype** .
+>
+> 不建议使用这个放来来继承其他对象, 性能极差, 建议通过 `Object.create()` 来完成继承.
+
+**MDN** 建议使用 `Object.getPrototypeOf()` 来访问原型.
+
+```javascript
+let arr = [];
+console.log(arr.__proto__ === Object.getPrototypeOf(arr)); // true
+```
 
 ####constructor
 
