@@ -274,7 +274,99 @@ c.say() // c
 
 #### promise
 
+> 异步编程解决方案.
 
+**它有三个状态** 
+
+- pending: 进行中
+- fulfilled: 成功
+- rejected: 失败
+
+```javascript
+let promise = new Promise(function(resolve, reject) {
+  // resolve: 成功触发, reject: 失败触发
+  resolve() // 调用后,将状态变为成功
+  reject() // 调用后,将状态变为失败
+})
+```
+
+**基本例子**
+
+> 成功
+
+```javascript
+var p = new Promise(function(resolve, reject) {
+  setTimeout(function() {
+    resolve('setTimeout成功')
+  }, 2000)
+})
+// 调动 then 方法传入一个回调函数可以通过参数获取到, 上面 resolve返回的值
+p.then(function(data) {
+  console.log(data); // 2秒后打印 resolve
+})
+```
+
+> 失败
+
+```javascript
+var p = new Promise(function(resolve, reject) {
+  setTimeout(function() {
+    reject('setTimeout失败')
+  }, 2000)
+})
+// 调动 then 方法传入第二个回调函数, 可以通过参数获取 reject返回的值
+p.then(function(data) {
+  console.log(data);
+}, function(err) {
+  console.log(err); // 2秒后, 打印 reject
+})
+```
+
+> 通过 **catch** 捕获 **reject** 的返回值.
+
+```javascript
+var p = new Promise(function(resolve, reject) {
+  setTimeout(function() {
+    reject('setTimeout失败')
+  }, 2000)
+})
+// 通过catch来捕获 失reject 的返回值
+p.then(function(data) {
+  console.log(data);
+}).catch(function(err) {
+  console.log(err);
+})
+```
+
+##### Promise.all()
+
+如何知道所有请求都完成了?
+
+```javascript
+// all 方法的参数是一个数组, 当里面的请求都完成时, 可以触发 then 事件.
+let p = Promise.all([
+  axios(url),
+  axios(url)
+])
+p.then(function(res){
+  console.log(res); // res是一个数组,里面存放了所有异步操作的返回数据
+})
+```
+
+#####Promise.race()
+
+多个异步请求, 那个先完成?
+
+```javascript
+// race 方法的参数是一个数组, 其中一个请求都完成时, 可以触发 then 事件.
+let p = Promise.race([
+  axios(url),
+  axios(url)
+])
+p.then(function(res){
+  console.log(res); // 这边的res是最先完成的请求的返回数据
+})
+```
 
 ### 转码
 
