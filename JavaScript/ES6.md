@@ -226,6 +226,34 @@ ES6 在线编译工具: http://babeljs.io/
 
 ## 方法
 
+### Object
+
+#### Object.assign
+
+讲多个对象合并成一个, 返回一个新的对象, 如果有相同的键, 则源属性会被覆盖.
+
+```javascript
+Object.assign(target, ...sources)
+```
+
+- target: 目标对象
+- sources: 合并的对象, 可以有多个.
+
+```javascript
+let user = {
+  name: 'atom',
+  age: 25
+}
+let obj = Object.assign({}, user, {
+  say () {
+    console.log(`my name is ${this.name}`)
+  },
+  name: 'AXX' // 覆盖了之前的 user 里的 name
+})
+console.log(obj) // {name: "AXX", age: 25, say: ƒ}
+obj.say() // my name is AXX
+```
+
 ### 关键字
 
 #### export
@@ -268,6 +296,32 @@ import {a,b,c} from './config.js'
 console.log(a) // a
 b() // b
 c.say() // c
+```
+
+> 可以在一个js文件中导出多个参数
+
+config.js
+
+```javascript
+export const commonParams = {
+  g_tk: 5381,
+  inCharset: 'utf-8',
+  outCharset: 'utf-8',
+  notice: 0,
+  format: 'jsonp'
+}
+
+export const options = {
+  param: 'jsonpCallback'
+}
+
+export const ERR_OK = 0
+```
+
+在另外一个 **JS文件** 中导入其中某些参数
+
+```javascript
+import {commonParams, options} from './config'
 ```
 
 ### 构造函数
