@@ -1,5 +1,11 @@
 ## 内置方法
 
+### Object
+
+#### Object.create()
+
+基于参数来创建一个新的对象.
+
 ### Array
 
 #### Array.prototype.findIndex()
@@ -65,8 +71,6 @@ console.log(Array.from({length:3}, item => 0)); // [0,0,0]
 ### String
 
 #### stringWith()
-
-#### startsWith
 
 ```javascript
 str.startsWith(searchString [, position]);

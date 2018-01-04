@@ -1,17 +1,3 @@
-## 需要做笔记
-
-### JS-apply & call & bind
-
-### JS-Object.create()
-
-### JQ-filter
-
-### constructor
-
-
-
-
-
 ## 基本概念
 
 > **JavaScript** 是一个单线程以事件驱动的语言。 
