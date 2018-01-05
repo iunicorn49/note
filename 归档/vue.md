@@ -41,11 +41,22 @@ v-html会解析标签.
 
 **v-cloak** 需要在 CSS 中加入 `[cloak]: {display:none}` 来使用.
 
+### 生命周期
+
+- beforeCreate
+- created：实例创建完成
+- beforeMount
+- mounted: 可以获取 DOM 元素
+- beforeUpdate
+- updated
+- beforeDestroy
+- destroyed
+
 ### 创建全局组件
 
 1. 使用 Vue.extend({}) 定义全局组件, 通过 Vue.componentd 注册到全局中.
 2. 直接使用 Vue.componentd('组件名', {...组件模板}) 来定义全局组件.
-3.  Vue.componentd('组件名', {..组件id}) 来定义全局组件, 需要在 html页面中创建 <template> 标签, 并指定 id, 多个元素需要先用一个大容器包裹.
+3. Vue.componentd('组件名', {..组件id}) 来定义全局组件, 需要在 html页面中创建 <template> 标签, 并指定 id, 多个元素需要先用一个大容器包裹.
 
 ### 如何发起请求
 
