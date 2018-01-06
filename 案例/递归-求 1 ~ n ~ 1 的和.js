@@ -3,4 +3,4 @@ function add(og, num) {
   n += (og - 1) * 2 + 1
   return og === 1 ? n : add(og - 1, n)
 }
-console.log(add(10));
+console.log(add(10)) // 100
