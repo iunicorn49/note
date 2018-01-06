@@ -9,37 +9,35 @@
 
 ### 常见指令
 
-#### v-if
+- v-text: 解析文本.
 
-根据表达式在DOM中生成或移除元素, 当一个元素不经常变化时使用.
+- v-html: 可以解析标签.
 
-经常配合 v-else 一起使用.
+- v-show: visibility, 元素经常改变时使用, 元素存在于 DOM树中.
 
-#### v-show
+- v-if: display, 元素不经常改变时使用, 元素直接在 DOM树中被移除或创建.
 
-根据表达式来控制,显示或隐藏元素, 当一个元素经常需要变化的时候使用.
+- v-else v-else-if: 配合上面.
 
-#### v-model
+- v-for: 循环, `(item, index) in Array` 或 `(val, key, index) in Object`  , `:key` : 相当于给每一项绑定一个唯一的 **ID标识** , 以后列表发生重排时更加高效.
 
-表单元素中, 双向绑定数据.
+- v-on: 绑定事件, 可以简写成 `@` , 可以添加修饰符, 可以直接给事件传值.
 
-#### v-bind
+- v-bind: 动态绑定一个或多个特性, 可以简写成 `:` , 绑定 `style` 或 `class` 的时候, 可以传入简单的表达式.
 
-响应更新 HTML 的特性, 可以简写成 `:` .
+  ```html
+  <div :class="{ red: isRed }"></div>
+  <div :class="[classA, classB]"></div>
+  <div :class="[classA, { classB: isB, classC: isC }]">
+  ```
 
-#### v-on
+- v-model: 给表单控件绑定值, 值存在于 `data` 中, 只有创建实例时设定的属性是响应式的.
 
-绑定事件, 可以简写成 `@` . 事件都放在 **methods** 中 .
+- v-pre: 禁止 Vue 编译这个元素, `{{}}` 会直接被输出, 可以提高效率.
 
-#### v-text v-html {{}}
+- v-cloak: 解决 `{{}}` 有时会一闪而过的情况, 需要配合 CSS `[v-cloak]:{display:none;}` 来使用, 本质就是,  Vue 编译完毕, 才让元素在dom中显示.
 
-用于实现数据绑定.
-
-v-html会解析标签.
-
-`{{}}` 在网速较慢的情况下会一闪而过, 可以用 **v-cloak** 来解决.
-
-**v-cloak** 需要在 CSS 中加入 `[cloak]: {display:none}` 来使用.
+- v-once: 让元素只被渲染一次, 可以提高性能.
 
 ### 生命周期
 
@@ -52,11 +50,142 @@ v-html会解析标签.
 - beforeDestroy
 - destroyed
 
-### 创建全局组件
+### 组件
 
-1. 使用 Vue.extend({}) 定义全局组件, 通过 Vue.componentd 注册到全局中.
-2. 直接使用 Vue.componentd('组件名', {...组件模板}) 来定义全局组件.
-3. Vue.componentd('组件名', {..组件id}) 来定义全局组件, 需要在 html页面中创建 <template> 标签, 并指定 id, 多个元素需要先用一个大容器包裹.
+####创建组件
+
+1. 全局: `Vue.component`
+2. 局部: 在容器实例中,  **components** 下配置.
+
+```html
+<div id="app">
+  <father></father>
+  <son></son>
+</div>
+<template id="father">
+  <h1>the father</h1>
+</template>
+<template id="son">
+  <span>It's son</span>
+</template>
+```
+
+```javascript
+Vue.component('father', {
+  template: '#father'
+})
+let son = {template: '#son'}
+let app = new Vue({
+  el: '#app',
+  components: {son}
+})
+```
+
+#### 通信
+
+##### 父子通信
+
+父组件通过 `v-bind` 将数据绑定到子组件上.
+
+子组件通过 `props` 拿到数据, `props` 是一个数组.
+
+```html
+<div id="father">
+  <input type="text" v-model="msg">
+  <son :from="msg"></son>
+</div>
+<template id="son">
+  <h1>{{from}}</h1>
+</template>
+```
+
+```javascript
+let son = {
+  template: '#son',
+  props: ['from']
+}
+let father = new Vue({
+  el: '#father',
+  data: {msg: 'hello'},
+  components: {son}
+})
+```
+
+##### 子父通信
+
+结构上, 父组件将自己的事件通过一个中间事件绑定到子组件上.
+
+子组件通过自己的事件触发 `$.emit` , 这个方法可以通过中间事件将自己的数据抛出, 并触发父组件的事件, 从而拿到数据.
+
+```html
+<div id="father">
+  <son @fn="get"></son>
+  <h1>{{msg}}</h1>
+</div>
+<template id="son">
+  <input type="text" v-model="sonMsg" @keyup="push">
+</template>
+```
+
+```javascript
+let son = {
+  template: '#son',
+  data() {return {sonMsg: 'hello'}},
+  created() {this.$emit('fn', this.sonMsg)},
+  methods: {push() {this.$emit('fn', this.sonMsg)}}
+}
+let father = new Vue({
+  el: '#father',
+  data: {msg: ''},
+  components: {son},
+  methods: {get(data) {this.msg = data}}
+})
+```
+
+##### 兄弟通信
+
+通过事件总线, 一个空的 vue 实例.
+
+`$emit` 将数据抛出, 另一方, 通过 `$on` 接受.
+
+```html
+<div id="app">
+  <first></first>
+  <second></second>
+</div>
+<template id="first">
+  <input type="text" v-model="firMsg" @keyup='push'>
+</template>
+<template id="second">
+  <h1>{{secMsg}}</h1>
+</template>
+```
+
+```javascript
+let bus = new Vue
+let first = {
+  template: '#first',
+  data() {return {firMsg: 'hello'}},
+  mounted() {bus.$emit('fn', this.firMsg)},
+  methods: {
+    push() {bus.$emit('fn', this.firMsg)}
+  }
+}
+let second = {
+  template: '#second',
+  data() {return {secMsg: ''}},
+  created() {
+    let that = this
+    bus.$on('fn', function (data) {
+      that.secMsg = data
+    })
+  }
+}
+let app = new Vue({
+  el: '#app',
+  components: {first, second}
+})
+```
 
 ### 如何发起请求
 
