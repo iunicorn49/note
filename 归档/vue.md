@@ -1,11 +1,15 @@
+##文档概述
+
 ### vue的核心
+
+vue.js 只给予开发者最核心的功能, 所以非常轻便, 拓展功能需要配合其他插件或者第三方库.
 
 - 双向数据绑定
 - MVVM思想
 - 组件化开发
-- 虚拟DOM树
+- 虚拟DOM树: 页面中你所看到的结构都是被 vue 编译过, 并不是代码中写的.
 - 自定义指令
-- 生命周期
+- 生命周期: 每一个 vue 实例都有自己的声明周期, 从被创建到被卸载.
 
 ### 常见指令
 
@@ -39,18 +43,30 @@
 
 - v-once: 让元素只被渲染一次, 可以提高性能.
 
+### 特殊特性
+
+- key: https://cn.vuejs.org/v2/guide/list.html#key
+- ref: https://cn.vuejs.org/v2/api/#ref
+- slot: https://cn.vuejs.org/v2/guide/components.html#%E4%BD%BF%E7%94%A8%E6%8F%92%E6%A7%BD%E5%88%86%E5%8F%91%E5%86%85%E5%AE%B9
+- slot-scope: 作用域插槽, 2.5.0 版本中新增
+- is: https://cn.vuejs.org/v2/guide/components.html#%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6
+
 ### 生命周期
 
+钩子函数的 **this** 指向调用它的实例, 不要使用 **箭头函数** , 会使 **this** 失效.
+
+####钩子函数
+
 - beforeCreate
-- created：实例创建完成
+- created：实例创建完成, 可以用于触发请求等行为.
 - beforeMount
-- mounted: 可以获取 DOM 元素
+- mounted: 可以获取 DOM 元素.
 - beforeUpdate
 - updated
 - beforeDestroy
 - destroyed
 
-### 组件
+### 组件 (component)
 
 ####创建组件
 
@@ -186,6 +202,16 @@ let app = new Vue({
   components: {first, second}
 })
 ```
+
+###计算属性与观察者 (computed & watch)
+
+文档: https://cn.vuejs.org/v2/guide/computed.html
+
+所有复杂的逻辑运算, 应该使用 **computed** , 它会将结果保存在内存中, 可以提升性能.
+
+**watch** 则是, 当被绑定的数据变化时就触发相应的行为.
+
+##面试题
 
 ### 如何发起请求
 
