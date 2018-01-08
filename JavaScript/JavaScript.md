@@ -1,3 +1,21 @@
+## 操作符
+
+### in
+
+判断某个属性是否属于某个对象, 可以是对象的具体属性, 也可以是通过prototype继承的, 返回布尔值.
+
+```javascript
+function Father(name, age) {
+  this.name = name,
+  this.age = age
+}
+Father.prototype.money = 998
+function Son() {}
+Son.prototype = Father.prototype
+let atom = new Son
+console.log('money' in atom)  //  true
+```
+
 ## 内置方法
 
 ### Object
@@ -143,5 +161,21 @@ localStorage.removeItem('username');
 ```javascript
 localStorage.setItem('obj', JSON.stringify(obj));
 localStorage.getItem('obj');
+```
+
+## H5方法
+
+### dataset
+
+```html
+<input type="text" data-num="1">
+<input type="text" data-num="2">
+```
+
+```javascript
+let inputs = document.querySelectorAll('input')
+inputs.forEach(item => {console.log(item.dataset.num)})
+//  1
+//  2
 ```
 
