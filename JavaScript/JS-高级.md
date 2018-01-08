@@ -1119,10 +1119,6 @@ let arr = [];
 console.log(arr.__proto__ === Object.getPrototypeOf(arr)); // true
 ```
 
-####constructor
-
-
-
 ###构造函数创建对象
 
 > 通过 `new` 来调用函数, 称之为构造函数, 返回一个对象,.

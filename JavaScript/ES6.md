@@ -1,13 +1,18 @@
 # ES6
 
+## 工具
+
+ES6 在线编译工具: http://babeljs.io/
+
 ## 关键字
 
-| 关键字     | 描述   | 备注                                       |
-| ------- | ---- | ---------------------------------------- |
-| let     | 声明变量 | 一个作用域中不允许出现同名变量, `{}` 可以生成作用域. 不会进行变量提升. |
-| const   | 声明常量 | 定义的时候必须赋值,同一个作用域中只允许声明一次, 并且不允许被改变, 声明对象和数组的时候, 可以被拓展, 值也允许被改变, 不会提升, 常量一般用大写字母表示. |
-| export  | 导出   | 从模块中, 导出函数,对象,原始值,其他程序可以通过 `import` 调用.  |
-| Promise | 处理异步 | 一个构造函数, 处理异步请求, 返回成功或失败.                 |
+| 关键字     | 描述    | 备注                                       |
+| ------- | ----- | ---------------------------------------- |
+| let     | 声明变量  | 一个作用域中不允许出现同名变量, `{}` 可以生成作用域. 不会进行变量提升. |
+| const   | 声明常量  | 定义的时候必须赋值,同一个作用域中只允许声明一次, 并且不允许被改变, 声明对象和数组的时候, 可以被拓展, 值也允许被改变, 不会提升, 常量一般用大写字母表示. |
+| export  | 导出    | 从模块中, 导出函数,对象,原始值,其他程序可以通过 `import` 调用.  |
+| as      | 导入重命名 | `import * as con from './config.js'` 将config.js的东西一次性导入, 并且重命名为 `con` . |
+| Promise | 处理异步  | 一个构造函数, 处理异步请求, 返回成功或失败.                 |
 
 ## 新增
 
@@ -196,33 +201,69 @@ let obj = {
 console.log(obj); // { name: 'atom', age: 25 }
 ```
 
-### 类
+> 通过 `[]` , 可以在 **Key** 的命名中, 使用表达式.
 
 ```javascript
-class Father {
-  // 构造函数
-  constructor() {
-    this.money = 100000;
-  } // constructor end
+let data = 23
+let obj = {
+  ['prop' + (arg => arg)(data)]: data
+}
+console.log(obj)  //  {prop23: 23}
+```
+
+> 方法简写
+
+```javascript
+let obj = {
+  say: function(a) {
+    console.log(a)
+  }
+}
+//  可以简写成下面的写法
+let obj = {
+  say(a) {
+    console.log(a)
+  }
+}
+```
+
+##class
+
+```javascript
+class Person {
+  constructor(name, age) {
+    this.name = name
+    this.age = age
+  }
+  say() {console.log(`my name is ${this.name}, I'm ${this.age}`)}
 }
 
-class Son extends Father {
-  constructor() {
-    // 上面用 extends 继承了 Father的属性, 这里就需要用 super 属性
-    super();
-    this.love = 'atom';
+class child extends Person {
+  constructor(name, age, id) {
+    super(name, age)
+    this.id = id
   }
 }
 
-let f = new Father();
-let s = new Son();
-console.log('f:',f);
-console.log('s:',s);
+let son = new child('zlk', 35, 1)
+son.say()
 ```
 
-## 工具
+### 关键字
 
-ES6 在线编译工具: http://babeljs.io/
+| 关键字         | 描述          |
+| ----------- | ----------- |
+| class       | 声明          |
+| constructor | 定义私有属性      |
+| extends     | 继承          |
+| super       | 继承者用于覆盖父级属性 |
+
+- class的声明不能被提升
+- class中的代码, 自带严格模式
+- class中的方法是不可枚举的
+- 每个类都有一个 [[construct]] 方法
+- 必须使用 `new` 来调用
+- 不能在类中修改类名
 
 ## 方法
 
@@ -253,6 +294,30 @@ let obj = Object.assign({}, user, {
 console.log(obj) // {name: "AXX", age: 25, say: ƒ}
 obj.say() // my name is AXX
 ```
+
+### Map
+
+通过键值对存储数据, 类似 Object , 更有语义性, 提供了内置的 getter/setter, 迭代器等方法.
+
+```javascript
+let m = new Map
+m.set('name', 'atom')
+console.log(m.get('name'))  //  atom
+```
+
+###Set
+
+类似数组, 会过滤掉重复的值.
+
+```javascript
+let s = new Set
+s.add('zlk').add('zlk').add('atom')
+console.log(s.size)  //  2
+console.log(s.has('zlk'))  //  true
+console.log(s)  //  {"zlk", "atom"}
+```
+
+这是一个强引用的集合, 通过 `new Set` 出来的实例, 只要引用一直存在, 内存就得不到释放, 可以通过 `WeakSet` 来解决.
 
 ### 关键字
 
@@ -322,6 +387,23 @@ export const ERR_OK = 0
 
 ```javascript
 import {commonParams, options} from './config'
+```
+
+####Generators
+
+解决回调地狱, 代码的执行和你书写的顺序有关.
+
+```javascript
+function * hello() {
+  yield 'hello'
+  yield 'world'
+  yield 'ending'
+}
+let h = hello()
+console.log(h.next())  //  {value: "hello", done: false}
+console.log(h.next())  //  {value: "world", done: false}
+console.log(h.next())  //  {value: "ending", done: false}
+console.log(h.next())  //  {value: undefined, done: true}
 ```
 
 ### 构造函数
