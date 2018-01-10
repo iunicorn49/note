@@ -26,30 +26,22 @@ console.log('money' in atom)  //  true
 
 ### Array
 
-#### Array.prototype.findIndex()
+#### Array.isArray()
+
+> 判断传递的值是否是 **Array** , 返回布尔值.
+
+`Array.isArray(obj)`
 
 ```javascript
-function isBigEnough(element) {
-  return element >= 15;
-}
-
-[12, 5, 8, 130, 44].findIndex(isBigEnough); 
-// index of 4th element in the Array is returned,
-// so this will result in '3'
+console.log(Array.isArray([1,2,3]))  //  true
+console.log(Array.isArray({foo: 123}))  //  false
+console.log(Array.isArray(Function.prototype))  //  false
+console.log(Array.isArray(Array.prototype))  //  true, 一般来说, 原型应该是一个对象, 但是数组的原型是一个特例, 它是一个数组
 ```
 
-> arr.findIndex(callback[, thisArg])
+#### Array.from()
 
-| 参数          | 描述                           |
-| ----------- | ---------------------------- |
-| callback    | 回调函数                         |
-| [, thisArg] | 当前元素                         |
-| arr         | 调用的数组                        |
-| thisArg     | 可选。执行`callback`时作为`this`对象的值 |
-
-####Array.from()
-
-> 将带有 **length** 属性的东西转化为数组, json格式对象, 可以手动添加 length属性.
+> 将带有 **length** 属性的东西转化为数组, json格式对象, 可以手动添加 length属性, 返回的是一个新的数组实例.
 
 ```javascript
 'use strict';
@@ -85,6 +77,47 @@ console.log(Array.from({length:3})); // 一个长度3的数组, 自动填充 und
 
 console.log(Array.from({length:3}, item => 0)); // [0,0,0]
 ```
+
+`Array.from(arrayLike, mapFn, thisArg)`
+
+| 参数           | 描述                  |
+| ------------ | ------------------- |
+| arrayLike    | 伪数组或者可迭代对象          |
+| mapFn — 可选   | 新数组中的每个元素都会执行这个回调函数 |
+| thisArg — 可选 | 回调函数的 **this** 指向   |
+
+```javascript
+let str = 'atom'
+let arr = Array.from(str, item => item.toUpperCase())
+console.log(arr)  //  ["A", "T", "O", "M"]
+```
+
+#### Array.prototype.findIndex()
+
+```javascript
+function isBigEnough(element) {
+  return element >= 15;
+}
+
+[12, 5, 8, 130, 44].findIndex(isBigEnough); 
+// index of 4th element in the Array is returned,
+// so this will result in '3'
+```
+
+`arr.findIndex(callback[, thisArg])`
+
+| 参数          | 描述                           |
+| ----------- | ---------------------------- |
+| callback    | 回调函数                         |
+| [, thisArg] | 当前元素                         |
+| arr         | 调用的数组                        |
+| thisArg     | 可选。执行`callback`时作为`this`对象的值 |
+
+####Array.prototype.concat()
+
+> 合并两个数组, 返回一个新的数组, 并不会改变原数组.
+
+
 
 ### String
 
