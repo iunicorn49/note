@@ -651,4 +651,3 @@ fs.readdir('test', function(err, data) {
 console.log(fs.readdirSync('test')); // [ 'test01.html' ]
 ```
 
-### path模块
