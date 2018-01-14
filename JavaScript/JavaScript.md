@@ -1,3 +1,43 @@
+### Array
+
+- pop: 删除最后一个元素,返回值该元素,会修改原数组的长度
+- push:在末尾增加一个或多个元素,返回新数组的长度
+- shift:删除第一个元素,返回该元素的值,会修改原数组的长度
+- unshift: 在开头增加一个或多个元素,返回新数组的长度
+
+### Array.prototype.every(callback(el,idx,arr))
+
+- 不会改变原数组
+- 不能再遍历的时候,对数组进行删除或增加
+- 返回一个布尔值,所有元素都通过才返回true
+
+### Array.prototype.fill(val,start,end)
+
+- 对原数组进行填充,由val决定填充内容
+- start默认为0,end默认为原数组的length
+- 返回一个修改后的数组,会修改原始数组
+
+### Array.prototype.filter(callback)
+
+- 对所有元素进行测试, 返回通过的元素组成一个新的数组
+- 不会改变原数组,返回一个新数组
+
+###Array.prototype.fing(callback)
+
+- 返回第一个通过回调函数筛选的元素
+- 如果不通过返回undefined
+
+### Array.prototype.findIndex(callback)
+
+- 同上,返回的是下标
+
+### Array.prototype.includes(val)
+
+- 判断数组是否包含val
+- 返回布尔值
+
+
+
 ## 操作符
 
 ### in

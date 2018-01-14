@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="app">
+    <inside>
+      <h1 slot="header">这里是header</h1>
+      <h3>main的标题</h3>
+      <p>main的内容</p>
+      <h1 slot="footer">这里是footer</h1>
+    </inside>
+  </div>
+
+  <template id="inside">
+    <div>
+      <header>
+        <slot name="header">header里没东西</slot>
+      </header>
+      <main>
+        <slot>main里没东西</slot>
+      </main>
+      <footer>
+        <slot name="footer">footer里没东西</slot>
+      </footer>
+    </div>
+  </template>
+
+<script src="./vue.js" charset="utf-8"></script>
+<script src="./main.js" charset="utf-8"></script>
+</body>
+</html>
