@@ -57,12 +57,14 @@ vue.js 只给予开发者最核心的功能, 所以非常轻便, 拓展功能需
 
 ####钩子函数
 
-- beforeCreate
-- created：实例创建完成, 可以用于触发请求等行为.
-- beforeMount
+- beforeCreate: 在实例初始化之后, 数据观测和 **event/watch** 之前.
+- created: 实例创建完成, 可以用于触发请求等行为. 可以观测数据, 使用 **watch/event** , 但是还没开始挂载, 无法获取 `$el` .
+- beforeMount: 挂载之前, `render` 被调用, 这个钩子在服务器端渲染不被调用.
 - mounted: 可以获取 DOM 元素.
-- beforeUpdate
-- updated
+- beforeUpdate: 数据更新时调用, 但是 `DOM` 还没重新渲染, 可以进一步进行数据操作, 而不会重复渲染 `DOM` .
+- updated: `DOM` 被更新, 可以在这里继续执行 `DOM` 操作, 但是不推荐.
+- activated: `keep-alive` 组件激活时调用.
+- deactivated: `keep-alive` 组件停用时调用.
 - beforeDestroy
 - destroyed
 
